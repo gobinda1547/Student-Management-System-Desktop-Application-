@@ -8,6 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/*
+ * While running this program please add user for login
+ * 
+ * You can add user by calling addUser function
+ */
 public class Dao {
 
 	static {
