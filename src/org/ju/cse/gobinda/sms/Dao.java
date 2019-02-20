@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -51,7 +52,7 @@ public class Dao {
 			System.err.println("probelm occurs in the dao static block! 2");
 		}
 
-		// addUserNamePassword("test", "test");
+		addUserNamePassword("a", "a");
 
 	}
 
@@ -84,6 +85,34 @@ public class Dao {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	private static void addUserNamePassword(String name, String password) {
+		Connection connection = null;
+		try {
+			connection = getDatabaseConnection();
+			PreparedStatement insertPreparedStatement = null;
+			String InsertQuery = "INSERT INTO user (username, password) values (?,?)";
+
+			connection.setAutoCommit(false);
+
+			insertPreparedStatement = connection.prepareStatement(InsertQuery);
+			insertPreparedStatement.setString(1, name);
+			insertPreparedStatement.setString(2, password);
+
+			insertPreparedStatement.executeUpdate();
+			insertPreparedStatement.close();
+
+			connection.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private static Connection getDatabaseConnection() {
